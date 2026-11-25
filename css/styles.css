@@ -573,6 +573,9 @@ button:disabled {
 .chat-fab:hover { transform: translateY(-2px) scale(1.03); }
 .chat-fab:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
 .chat-fab.hidden-fab { opacity: 0; pointer-events: none; transform: scale(0.8); }
+/* Trang nhân viên: chỉ hiện icon, dạng ô vuông bo góc giống icon trên tab */
+.chat-fab.chat-fab--icon { width: 54px; height: 54px; padding: 0; justify-content: center; border-radius: 16px; }
+.chat-fab.chat-fab--icon .chat-fab-text { display: none; }
 .chat-fab-icon { display: inline-flex; animation: chatWiggle 2.4s ease-in-out infinite; }
 @keyframes chatWiggle { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(-14deg); } 92% { transform: rotate(10deg); } }
 
