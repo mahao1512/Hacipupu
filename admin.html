@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khu Vực Nhân Viên — HACIPUPU Toy Box</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Tailwind đã build sẵn (thay cho cdn.tailwindcss.com); đặt sau styles.css để giữ đúng thứ tự ưu tiên như bản CDN -->
+  <link rel="stylesheet" href="css/tailwind.css" />
+</head>
+<body data-page="admin" class="bg-toy-dots min-h-screen flex flex-col">
+  <div id="site-header"></div>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
+    <!-- Khóa khi chưa đăng nhập -->
+    <section id="admin-locked" class="hidden max-w-md mx-auto mt-10 bg-white rounded-[28px] p-8 text-center border-2 border-emerald-200 shadow-sm">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-emerald-100 text-3xl flex items-center justify-center">🔐</div>
+      <h1 class="font-display font-bold text-2xl text-gray-900">Khu vực dành cho nhân viên</h1>
+      <p class="text-sm text-gray-500 font-semibold mt-1 mb-5">Đăng nhập để quản lý kho, duyệt đơn hàng và thêm sản phẩm mới.</p>
+      <button type="button" id="locked-login-btn" class="w-full py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-sm cursor-pointer">Đăng nhập nhân viên</button>
+      <a href="index.html" class="inline-block mt-3 text-sm font-bold text-gray-500 hover:text-[#FF6B6B]">← Về trang chủ</a>
+    </section>
+
+    <div id="admin-app" class="hidden space-y-7">
+      <!-- KPIs -->
+      <section class="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-extrabold uppercase tracking-wider mb-2">👩‍💼 Chế độ nhân viên</span>
+          <h1 id="admin-title" class="font-display font-bold text-3xl sm:text-4xl text-gray-900">Quản Lý Kho</h1>
+          <p id="admin-subtitle" class="text-sm sm:text-base text-gray-500 font-semibold mt-1"></p>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 shrink-0">
+          <div class="bg-white rounded-2xl px-4 py-3 border border-gray-200 shadow-sm text-center">
+            <div id="kpi-series" class="font-display font-bold text-2xl text-[#4D96FF]">0</div>
+            <div class="text-[11px] font-extrabold text-gray-400 uppercase">Series</div>
+          </div>
+          <div class="bg-white rounded-2xl px-4 py-3 border border-gray-200 shadow-sm text-center">
+            <div id="kpi-figures" class="font-display font-bold text-2xl text-[#FF6B6B]">0</div>
+            <div class="text-[11px] font-extrabold text-gray-400 uppercase">Mẫu</div>
+          </div>
+          <div class="bg-white rounded-2xl px-4 py-3 border border-gray-200 shadow-sm text-center">
+            <div id="kpi-stock" class="font-display font-bold text-2xl text-[#6BCB77]">0</div>
+            <div class="text-[11px] font-extrabold text-gray-400 uppercase">Tổng tồn</div>
+          </div>
+          <div class="bg-white rounded-2xl px-4 py-3 border border-gray-200 shadow-sm text-center">
+            <div id="kpi-low" class="font-display font-bold text-2xl text-amber-500">0</div>
+            <div class="text-[11px] font-extrabold text-gray-400 uppercase">Sắp hết</div>
+          </div>
+          <div class="bg-white rounded-2xl px-4 py-3 border border-gray-200 shadow-sm text-center col-span-2 sm:col-span-1">
+            <div id="kpi-pending" class="font-display font-bold text-2xl text-purple-600">0</div>
+            <div class="text-[11px] font-extrabold text-gray-400 uppercase">Đơn chờ duyệt</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TAB: KHO ===== -->
+      <section data-tab="kho" class="space-y-6">
+        <div id="series-stock-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"></div>
+
+        <div class="bg-white rounded-[26px] p-6 sm:p-7 border border-gray-200 shadow-sm space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 class="font-display font-bold text-xl text-gray-900">Tồn kho từng mẫu</h2>
+              <p class="text-xs font-bold text-gray-400 mt-0.5">Sửa nhanh giá & tồn kho rồi bấm “Lưu”, hoặc “Sửa” để đổi đầy đủ thông tin.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <input type="search" id="admin-search-input" placeholder="🔍 Tìm theo tên mẫu..."
+                class="px-3.5 py-2 rounded-xl border border-gray-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#4D96FF]" />
+              <select id="admin-series-filter" class="px-3.5 py-2 rounded-xl border border-gray-200 text-sm font-semibold bg-white focus:outline-none focus:ring-2 focus:ring-[#4D96FF]">
+                <option value="">Tất cả Series</option>
+              </select>
+              <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-xs font-extrabold text-amber-800 cursor-pointer">
+                <input type="checkbox" id="admin-low-filter" class="w-4 h-4 accent-amber-500" /> Chỉ mẫu sắp hết (≤ 3)
+              </label>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto rounded-2xl border border-gray-100">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-gray-50 text-gray-500 text-xs font-extrabold uppercase tracking-wider border-b border-gray-200">
+                  <th class="py-3.5 px-4">ID</th>
+                  <th class="py-3.5 px-4">Sản phẩm</th>
+                  <th class="py-3.5 px-4">Series</th>
+                  <th class="py-3.5 px-4">Giá (VNĐ)</th>
+                  <th class="py-3.5 px-4">Tồn kho</th>
+                  <th class="py-3.5 px-4 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="admin-figures-tbody" class="divide-y divide-gray-100 text-sm"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== TAB: ĐƠN HÀNG ===== -->
+      <section data-tab="don-hang" class="hidden space-y-5">
+        <div id="order-status-filters" class="flex flex-wrap gap-2"></div>
+        <div id="orders-list" class="space-y-4"></div>
+      </section>
+
+      <!-- ===== TAB: THÊM MỚI ===== -->
+      <section data-tab="them-moi" class="hidden grid grid-cols-1 xl:grid-cols-2 gap-6 items-start">
+        <!-- Thêm sản phẩm -->
+        <div class="bg-white rounded-[26px] p-6 sm:p-7 border-2 border-amber-200/70 shadow-sm">
+          <div class="flex items-center gap-2.5 mb-5">
+            <span class="w-10 h-10 rounded-2xl bg-amber-100 text-xl flex items-center justify-center">🧸</span>
+            <div>
+              <h2 class="font-display font-bold text-xl text-gray-900">Thêm sản phẩm mới</h2>
+              <p class="text-xs font-bold text-gray-400">Một mẫu figure thuộc một series</p>
+            </div>
+          </div>
+          <form id="create-figure-form" class="space-y-3.5">
+            <div>
+              <label class="admin-label">Tên mẫu *</label>
+              <input type="text" name="name" required placeholder="VD: Little Star Hero" class="admin-input" />
+            </div>
+            <div>
+              <label class="admin-label">Thuộc series *</label>
+              <select name="series_id" id="create-series-select" required class="admin-input bg-white"></select>
+            </div>
+            <div data-image-field>
+              <label class="admin-label">Ảnh sản phẩm *</label>
+              <div class="flex gap-3 items-start">
+                <img data-image-preview src="" alt="Xem trước" class="w-20 h-20 rounded-2xl object-contain bg-amber-50 border border-amber-200 p-1 shrink-0"
+                  onerror="window.HacipupuApp && window.HacipupuApp.handleImgError(this)" />
+                <div class="flex-1 space-y-2">
+                  <input type="text" name="image_path" data-image-input required list="img-suggestions" placeholder="img/... — chọn ảnh có sẵn hoặc tải ảnh lên" class="admin-input" />
+                  <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-extrabold text-gray-700 cursor-pointer">
+                    📤 Tải ảnh từ máy
+                    <input type="file" accept="image/*" data-image-upload class="sr-only" />
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="admin-label">Giá bán lẻ (VNĐ) *</label>
+                <input type="number" name="price" required min="0" step="1000" value="270000" class="admin-input" />
+              </div>
+              <div>
+                <label class="admin-label">Số lượng tồn kho *</label>
+                <input type="number" name="stock" required min="0" value="10" class="admin-input" />
+              </div>
+            </div>
+            <label class="inline-flex items-center gap-2.5 cursor-pointer px-4 py-2 rounded-xl bg-amber-50 border border-amber-200">
+              <input type="checkbox" name="is_secret" class="w-4 h-4 accent-amber-500" />
+              <span class="text-xs font-extrabold text-amber-800">👑 Đây là mẫu SECRET</span>
+            </label>
+            <button type="submit" class="w-full py-3 rounded-xl btn-coral font-extrabold text-sm cursor-pointer">+ Thêm sản phẩm</button>
+          </form>
+        </div>
+
+        <!-- Thêm series -->
+        <div class="bg-white rounded-[26px] p-6 sm:p-7 border-2 border-sky-200/70 shadow-sm">
+          <div class="flex items-center gap-2.5 mb-5">
+            <span class="w-10 h-10 rounded-2xl bg-sky-100 text-xl flex items-center justify-center">📚</span>
+            <div>
+              <h2 class="font-display font-bold text-xl text-gray-900">Thêm series mới</h2>
+              <p class="text-xs font-bold text-gray-400">Sau khi tạo, thêm các mẫu figure cho series ở form bên cạnh</p>
+            </div>
+          </div>
+          <form id="create-series-form" class="space-y-3.5">
+            <div>
+              <label class="admin-label">Tên series *</label>
+              <input type="text" name="name" required placeholder="VD: HACIPUPU Sweet Dream Series Figures" class="admin-input" />
+            </div>
+            <div data-image-field>
+              <label class="admin-label">Ảnh hộp blind box *</label>
+              <div class="flex gap-3 items-start">
+                <img data-image-preview src="" alt="Xem trước" class="w-20 h-20 rounded-2xl object-contain bg-sky-50 border border-sky-200 p-1 shrink-0"
+                  onerror="window.HacipupuApp && window.HacipupuApp.handleImgError(this)" />
+                <div class="flex-1 space-y-2">
+                  <input type="text" name="box_image" data-image-input required list="img-suggestions" placeholder="img/.../box.png hoặc tải ảnh lên" class="admin-input" />
+                  <label class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-extrabold text-gray-700 cursor-pointer">
+                    📤 Tải ảnh từ máy
+                    <input type="file" accept="image/*" data-image-upload class="sr-only" />
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="admin-label">Giá 1 Blind Box *</label>
+                <input type="number" name="blind_box_price" required min="0" step="1000" value="270000" class="admin-input" />
+              </div>
+              <div>
+                <label class="admin-label">Giá Full Set *</label>
+                <input type="number" name="full_set_price" required min="0" step="1000" value="3000000" class="admin-input" />
+              </div>
+            </div>
+            <div>
+              <label class="admin-label">Mô tả</label>
+              <textarea name="description" rows="3" placeholder="Giới thiệu ngắn về series..." class="admin-input"></textarea>
+            </div>
+            <div>
+              <label class="admin-label">Link video YouTube (không bắt buộc)</label>
+              <input type="url" name="youtube_embed_url" placeholder="Dán link YouTube: youtube.com/watch?v=..., youtu.be/... hoặc /embed/..." class="admin-input" />
+            </div>
+            <button type="submit" class="w-full py-3 rounded-xl btn-sky font-extrabold text-sm cursor-pointer">+ Tạo series</button>
+          </form>
+
+          <div class="mt-6 pt-5 border-t border-dashed border-gray-200">
+            <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Series hiện có</h3>
+            <div id="series-manage-list" class="space-y-2"></div>
+          </div>
+        </div>
+        <datalist id="img-suggestions"></datalist>
+      </section>
+    </div>
+  </main>
+
+  <!-- Sửa figure -->
+  <div id="edit-figure-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-[26px] max-w-lg w-full p-6 shadow-2xl border border-gray-200 relative max-h-[92vh] overflow-y-auto">
+      <button type="button" data-close-modal class="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold cursor-pointer" aria-label="Đóng">✕</button>
+      <h3 class="font-display font-bold text-xl text-gray-900 mb-4">✏️ Chỉnh sửa mẫu</h3>
+      <form id="edit-figure-form" class="space-y-3.5">
+        <input type="hidden" name="id" />
+        <div><label class="admin-label">Tên mẫu</label><input type="text" name="name" required class="admin-input" /></div>
+        <div><label class="admin-label">Series</label><select name="series_id" id="edit-series-select" required class="admin-input bg-white"></select></div>
+        <div data-image-field>
+          <label class="admin-label">Ảnh</label>
+          <div class="flex gap-3 items-start">
+            <img data-image-preview src="" alt="" class="w-16 h-16 rounded-xl object-contain bg-gray-50 border p-1 shrink-0" onerror="window.HacipupuApp && window.HacipupuApp.handleImgError(this)" />
+            <div class="flex-1 space-y-2">
+              <input type="text" name="image_path" data-image-input list="img-suggestions" required class="admin-input" />
+              <label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-extrabold text-gray-700 cursor-pointer">📤 Tải ảnh khác<input type="file" accept="image/*" data-image-upload class="sr-only" /></label>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="admin-label">Giá (VNĐ)</label><input type="number" name="price" min="0" required class="admin-input" /></div>
+          <div><label class="admin-label">Tồn kho</label><input type="number" name="stock" min="0" required class="admin-input" /></div>
+        </div>
+        <label class="inline-flex items-center gap-2 cursor-pointer pt-1"><input type="checkbox" name="is_secret" class="w-4 h-4 accent-amber-500" /><span class="text-xs font-extrabold text-amber-800">👑 Mẫu Secret</span></label>
+        <div class="flex gap-2.5 pt-2">
+          <button type="button" data-close-modal class="px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm cursor-pointer">Hủy</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl btn-sky font-extrabold text-sm cursor-pointer">Lưu thay đổi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sửa series -->
+  <div id="edit-series-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-[26px] max-w-lg w-full p-6 shadow-2xl border border-gray-200 relative max-h-[92vh] overflow-y-auto">
+      <button type="button" data-close-modal class="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold cursor-pointer" aria-label="Đóng">✕</button>
+      <h3 class="font-display font-bold text-xl text-gray-900 mb-4">✏️ Chỉnh sửa series</h3>
+      <form id="edit-series-form" class="space-y-3.5">
+        <input type="hidden" name="id" />
+        <div><label class="admin-label">Tên series</label><input type="text" name="name" required class="admin-input" /></div>
+        <div data-image-field>
+          <label class="admin-label">Ảnh hộp</label>
+          <div class="flex gap-3 items-start">
+            <img data-image-preview src="" alt="" class="w-16 h-16 rounded-xl object-contain bg-gray-50 border p-1 shrink-0" onerror="window.HacipupuApp && window.HacipupuApp.handleImgError(this)" />
+            <div class="flex-1 space-y-2">
+              <input type="text" name="box_image" data-image-input list="img-suggestions" required class="admin-input" />
+              <label class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-extrabold text-gray-700 cursor-pointer">📤 Tải ảnh khác<input type="file" accept="image/*" data-image-upload class="sr-only" /></label>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="admin-label">Giá 1 Blind Box</label><input type="number" name="blind_box_price" min="0" required class="admin-input" /></div>
+          <div><label class="admin-label">Giá Full Set</label><input type="number" name="full_set_price" min="0" required class="admin-input" /></div>
+        </div>
+        <div><label class="admin-label">Mô tả</label><textarea name="description" rows="3" class="admin-input"></textarea></div>
+        <div><label class="admin-label">Link video YouTube</label><input type="url" name="youtube_embed_url" class="admin-input" /></div>
+        <div class="flex gap-2.5 pt-2">
+          <button type="button" data-close-modal class="px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm cursor-pointer">Hủy</button>
+          <button type="submit" class="flex-1 py-2.5 rounded-xl btn-sky font-extrabold text-sm cursor-pointer">Lưu thay đổi</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Xác nhận (xóa / hủy đơn) -->
+  <div id="confirm-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-[26px] max-w-sm w-full p-6 text-center shadow-2xl border border-rose-200">
+      <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-rose-100 text-3xl flex items-center justify-center">⚠️</div>
+      <h3 id="confirm-title" class="font-display font-bold text-xl text-gray-900 mb-1"></h3>
+      <p id="confirm-text" class="text-sm text-gray-500 font-semibold mb-5"></p>
+      <div class="flex gap-2.5">
+        <button type="button" data-close-modal class="flex-1 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm cursor-pointer">Không</button>
+        <button type="button" id="confirm-ok-btn" class="flex-1 py-2.5 rounded-xl btn-coral font-extrabold text-sm cursor-pointer">Đồng ý</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="data/seed.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

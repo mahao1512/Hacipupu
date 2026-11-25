@@ -1,0 +1,66 @@
+id,series_id,name,image_path,price,stock,is_secret
+1,1,"Little Snowboarder","img/HACIPUPU My Little Hero Series Figures/1.avif",260000,12,0
+2,1,"Little Guard","img/HACIPUPU My Little Hero Series Figures/2.avif",260000,10,0
+3,1,"Little Pilot","img/HACIPUPU My Little Hero Series Figures/3.avif",260000,9,0
+4,1,"Little Astronaut","img/HACIPUPU My Little Hero Series Figures/4.avif",280000,8,0
+5,1,"Little Sailor","img/HACIPUPU My Little Hero Series Figures/5.avif",260000,11,0
+6,1,"Little Commander","img/HACIPUPU My Little Hero Series Figures/6.avif",260000,10,0
+7,1,"Little Teacher","img/HACIPUPU My Little Hero Series Figures/7.avif",250000,14,0
+8,1,"Little Farmer","img/HACIPUPU My Little Hero Series Figures/8.avif",250000,15,0
+9,1,"Little Doctor","img/HACIPUPU My Little Hero Series Figures/9.avif",270000,7,0
+10,1,"Little Courier","img/HACIPUPU My Little Hero Series Figures/10.avif",250000,12,0
+11,1,"Little Firefighter","img/HACIPUPU My Little Hero Series Figures/11.avif",260000,10,0
+12,1,"Dr. H","img/HACIPUPU My Little Hero Series Figures/12.avif",270000,8,0
+13,1,"My Little Hero (Secret)","img/HACIPUPU My Little Hero Series Figures/13.avif",890000,2,1
+14,2,"Ladybug","img/HACIPUPU Adventures In The Woods Series Figures/1.jpg",270000,10,0
+15,2,"Mushroom","img/HACIPUPU Adventures In The Woods Series Figures/2.jpg",270000,12,0
+16,2,"Adventurer","img/HACIPUPU Adventures In The Woods Series Figures/3.jpg",290000,8,0
+17,2,"Cannibal Flower","img/HACIPUPU Adventures In The Woods Series Figures/4.jpg",270000,9,0
+18,2,"Little Raccoon","img/HACIPUPU Adventures In The Woods Series Figures/5.jpg",270000,11,0
+19,2,"Mr. Fox","img/HACIPUPU Adventures In The Woods Series Figures/6.jpg",280000,7,0
+20,2,"Owl","img/HACIPUPU Adventures In The Woods Series Figures/7.jpg",280000,9,0
+21,2,"Little Tree","img/HACIPUPU Adventures In The Woods Series Figures/8.jpg",260000,13,0
+22,2,"Little Ghost","img/HACIPUPU Adventures In The Woods Series Figures/9.jpg",290000,6,0
+23,2,"Firefly (Glow Secret)","img/HACIPUPU Adventures In The Woods Series Figures/10.jpg",850000,2,1
+24,2,"Morning Glory","img/HACIPUPU Adventures In The Woods Series Figures/11.jpg",280000,10,0
+25,2,"Gremlin","img/HACIPUPU Adventures In The Woods Series Figures/12.jpg",260000,12,0
+26,3,"Sweet Sheep","img/HACIPUPU Snuggle With You Series Figures/1795419063869_81ef2f0b399ccc8854cf0ca035b3e13d.avif",290000,10,0
+27,3,"Blue Bunny","img/HACIPUPU Snuggle With You Series Figures/1795419068276_4152c212bab5a0d91f41e6e2c9157ef4.avif",290000,9,0
+28,3,"Lovely Fox","img/HACIPUPU Snuggle With You Series Figures/1795419073509_a365144942c74b86433a0af1c63446cb.avif",290000,11,0
+29,3,"Cozy Piggy","img/HACIPUPU Snuggle With You Series Figures/1795419078196_fb6020b8573ed068952fe4bac7477256.avif",280000,12,0
+30,3,"Baa Tiger","img/HACIPUPU Snuggle With You Series Figures/1795419083095_63f88220b9aecdf1afd3460625d30724.avif",290000,8,0
+31,3,"Warm Reindeer","img/HACIPUPU Snuggle With You Series Figures/1795419087139_8af33fad1a09f39c2e818bf2403c66d0.avif",280000,10,0
+32,3,"Happy Crocodile","img/HACIPUPU Snuggle With You Series Figures/1795419092263_1a0eda5984f8ae4a208f1d7087bee3ff.avif",290000,9,0
+33,3,"Lucky Penguin","img/HACIPUPU Snuggle With You Series Figures/1795419096974_706dd0da268dafdd8017449846a2a0ae.avif",280000,11,0
+34,3,"Sleepy Koala","img/HACIPUPU Snuggle With You Series Figures/1795419101985_594c3ab6d7f1fe754bfecd042ebbbcbf.avif",280000,10,0
+35,3,"Acorn Squirrel","img/HACIPUPU Snuggle With You Series Figures/1795419107649_4293f79f17d0c4561106d6713cfa5c2b.avif",280000,12,0
+36,3,"Fluffy Shiba","img/HACIPUPU Snuggle With You Series Figures/1795419116132_04f34a6bd9023456c4992a14198e0146.avif",290000,8,0
+37,3,"Polar Bear","img/HACIPUPU Snuggle With You Series Figures/1795419122799_dd12178bc61d3fc599e64787eb20ada6.avif",280000,10,0
+38,3,"Dreamy Pegasus (Secret)","img/HACIPUPU Snuggle With You Series Figures/1795419127706_2134e90bbedf5090afd3d165d33266e4.avif",980000,2,1
+39,3,"Party Penguin","img/HACIPUPU Snuggle With You Series Figures/1795419131760_e9493628e268fc2d828b8e05a403ad99.avif",290000,7,0
+40,4,"Winter Knit Pink","img/HACIPUPU Whispers of My World Series Figures/1794217239040_04f34a6bd9023456c4992a14198e0146.avif",270000,10,0
+41,4,"Banana Boat Nap","img/HACIPUPU Whispers of My World Series Figures/1794217242056_4152c212bab5a0d91f41e6e2c9157ef4.avif",270000,11,0
+42,4,"Teal Sweater Puppy","img/HACIPUPU Whispers of My World Series Figures/1794217245488_706dd0da268dafdd8017449846a2a0ae.avif",280000,9,0
+43,4,"Red Flower Sprout","img/HACIPUPU Whispers of My World Series Figures/1794217249247_81ef2f0b399ccc8854cf0ca035b3e13d.avif",270000,12,0
+44,4,"Snowflake Earmuffs","img/HACIPUPU Whispers of My World Series Figures/1794217252632_dd12178bc61d3fc599e64787eb20ada6.avif",280000,8,0
+45,4,"Carrot Bunny","img/HACIPUPU Whispers of My World Series Figures/1794217256015_1a0eda5984f8ae4a208f1d7087bee3ff.avif",270000,10,0
+46,4,"Chocolate Donut","img/HACIPUPU Whispers of My World Series Figures/1794217260066_4293f79f17d0c4561106d6713cfa5c2b.avif",280000,9,0
+47,4,"Plush Bunny Hug","img/HACIPUPU Whispers of My World Series Figures/1794217263759_8af33fad1a09f39c2e818bf2403c66d0.avif",280000,10,0
+48,4,"Antenna Hat","img/HACIPUPU Whispers of My World Series Figures/1794217267746_63f88220b9aecdf1afd3460625d30724.avif",270000,11,0
+49,4,"Bedtime Squirrel","img/HACIPUPU Whispers of My World Series Figures/1794217272531_a365144942c74b86433a0af1c63446cb.avif",280000,8,0
+50,4,"Cheese Mouse","img/HACIPUPU Whispers of My World Series Figures/1794217276790_fb6020b8573ed068952fe4bac7477256.avif",270000,12,0
+51,4,"Pillow Sketching","img/HACIPUPU Whispers of My World Series Figures/1794217280451_594c3ab6d7f1fe754bfecd042ebbbcbf.avif",270000,9,0
+52,4,"Starry Teddy Blanket (Secret)","img/HACIPUPU Whispers of My World Series Figures/1794217283622_e9493628e268fc2d828b8e05a403ad99.avif",920000,2,1
+53,5,"Action Kamen Hero","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304097108_836d2b7637d0da757b8f37e13db3d0e2.avif",300000,9,0
+54,5,"Chocobi Waniyama","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304104660_28325ef74c050359db75dd942f761622.avif",300000,8,0
+55,5,"Buriburizaemon","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304108283_4d76c14a29a9dcb0170dd43332d9c57d.avif",290000,10,0
+56,5,"Shiro Bubble Bath","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304113842_ac7a11143b7b2df8598bf2fa11df4845.avif",290000,11,0
+57,5,"Nap Time","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304129772_936eb9d79a30bb97a9a569c8cf5a2f44.avif",290000,10,0
+58,5,"Kindergarten Shiro","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304133737_8d6dc18cd6d4e87a15f1e5b7c3819454.avif",300000,9,0
+59,5,"Zip-up Pajamas","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304139184_8cb008513df68ae3dae2a370abccd70f.avif",290000,12,0
+60,5,"Shiro Doghouse","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304144957_b5eb490812657e26e18238fde93df437.avif",290000,10,0
+61,5,"Shiro in Cardboard Box","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304169432_af44fbdc49a608d3423a6c172a9f33b7.avif",300000,8,0
+62,5,"Tricycle Ride","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304183131_a8fbeb6bc66fa34b308ed431513ea6d7.avif",290000,11,0
+63,5,"Raincoat Puddle","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304186892_8cc6978a0636a2178869248950e7329e.avif",290000,10,0
+64,5,"Dinosaur Onesie","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304189786_662faffa6b297e6bc1e5a10f5fa6237f.avif",300000,9,0
+65,5,"Action Spring Bus (Secret)","img/HACIPUPU × CRAYON SHINCHAN One Day in Kasukabe Series Figures/1787304239403_ebfd09764e668c03e2fe2ab5c851ccb7.avif",990000,2,1
