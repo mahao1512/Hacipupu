@@ -1,0 +1,13 @@
+name = "hacipupu-ai"
+main = "openrouter-proxy.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+# Các domain được phép gọi Worker (cách nhau bằng dấu phẩy).
+# Thêm domain GitHub Pages của bạn, ví dụ: https://ten-ban.github.io
+ALLOWED_ORIGINS = "http://localhost:5500,http://127.0.0.1:5500,http://localhost:8000,http://127.0.0.1:8000"
+MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free"
+REASONING = "true"
+
+# API key KHÔNG để ở đây. Đặt bằng lệnh:  npx wrangler secret put OPENROUTER_API_KEY
+# (Khi chạy thử local, wrangler đọc key từ file .dev.vars — file này đã nằm trong .gitignore.)

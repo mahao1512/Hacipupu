@@ -1,9 +1,10 @@
 /*
  * Trợ lý HACIPUPU — chat box trả lời câu hỏi về sản phẩm của trang.
  *
- * Chạy hoàn toàn trên trình duyệt, KHÔNG gọi dịch vụ AI bên ngoài. Mọi câu trả
- * lời được dựng từ dữ liệu thật của trang (series, mẫu figure, giá, tồn kho,
- * đơn hàng của khách) qua HacipupuStore, nên không bao giờ bịa ra thông tin:
+ * Nếu js/ai-config.js có endpoint (Cloudflare Worker trong worker/), câu hỏi được
+ * gửi tới AI qua OpenRouter, kèm dữ liệu thật của trang làm ngữ cảnh. Nếu không
+ * cấu hình hoặc AI lỗi, dùng bộ trả lời dựng sẵn bên dưới — chạy hoàn toàn trên
+ * trình duyệt, dựng từ dữ liệu thật (series, mẫu, giá, tồn kho, đơn hàng):
  *  - Hỏi đúng chủ đề và trang có dữ liệu → trả lời từ dữ liệu.
  *  - Hỏi đúng chủ đề nhưng trang không có thông tin → nói rõ là không có.
  *  - Hỏi ngoài lề (thời tiết, bài tập, chuyện khác...) → từ chối lịch sự.
@@ -339,6 +340,91 @@
     return `Xin chào! Mình là <b>Trợ lý HACIPUPU</b> 🪄. Mình trả lời các câu hỏi về sản phẩm trên trang: series, mẫu nhân vật, giá, tồn kho, mẫu Secret, blind box / full set, thanh toán và đơn hàng của bạn.`;
   }
 
+  // ---------- AI (OpenRouter qua Cloudflare Worker, xem worker/) ----------
+  const AI = window.HACIPUPU_AI || {};
+  const aiEnabled = () => /^https?:\/\//i.test(String(AI.endpoint || ""));
+  const history = []; // [{ role, content }] — chỉ giữ trong phiên mở trang
+
+  function buildSystemPrompt() {
+    const lines = data.series.map((s) => {
+      const figs = figsOf(s);
+      const figText = figs
+        .map((f) => `  - ${f.name}${Number(f.is_secret) ? " [SECRET]" : ""}: giá lẻ ${formatVND(f.price)}, ${Number(f.stock) > 0 ? `còn ${f.stock}` : "hết hàng"}`)
+        .join("\n");
+      const normals = figs.filter((f) => !Number(f.is_secret)).length;
+      return `### ${s.name} (link: detail.html?id=${s.id})
+- Blind box: ${formatVND(s.blind_box_price)}/hộp · Full Set (${normals} mẫu thường, không gồm Secret): ${formatVND(s.full_set_price)}
+- Video: ${s.has_local_video ? "có video mở hộp" : s.youtube_embed_url ? "có video YouTube" : "không có"}
+- Mô tả: ${s.description || "—"}
+- Các mẫu:
+${figText}`;
+    });
+    const orders = isStaff()
+      ? "Người dùng là NHÂN VIÊN — xem toàn bộ đơn ở admin.html#don-hang."
+      : data.myOrders.length
+        ? data.myOrders.map((o) => `- ${o.code}: ${o.status_label}, tổng ${formatVND(o.total_amount)}`).join("\n")
+        : "Khách chưa có đơn hàng nào trên trình duyệt này.";
+
+    return `Bạn là "Trợ lý HACIPUPU" của cửa hàng HACIPUPU Toy Box (bán figure blind box HACIPUPU). Trả lời bằng tiếng Việt, thân thiện, ngắn gọn (tối đa ~6 dòng).
+
+QUY TẮC BẮT BUỘC:
+1. Chỉ trả lời về sản phẩm và việc mua hàng trên trang (series, mẫu, giá, tồn kho, Secret, blind box/full set, thanh toán, đơn hàng, bộ sưu tập). Câu hỏi ngoài lề → lịch sự từ chối.
+2. CHỈ dùng dữ liệu bên dưới. Không bịa giá, tồn kho, chính sách. Nếu dữ liệu không có (phí ship, thời gian giao, đổi trả, khuyến mãi, hotline, giờ mở cửa, trả góp...) → nói rõ trang không có thông tin đó và gợi ý ghé ${SITE_FACTS.store} (bản đồ ở cuối trang).
+3. Định dạng: dùng **in đậm** cho giá/tên; link dạng [chữ](detail.html?id=N) hoặc [chữ](orders.html), [chữ](collection.html). Không dùng bảng, không dùng tiêu đề #.
+
+THÔNG TIN CHUNG:
+- Kích thước figure: ${SITE_FACTS.size}; chất liệu: ${SITE_FACTS.material}; cửa hàng: ${SITE_FACTS.store}.
+- Tỷ lệ ra mẫu Secret khi mở 1 blind box: 1/144. Mỗi blind box chứa ngẫu nhiên 1 mẫu của series.
+- Cách mua: chọn Blind Box hoặc Full Set ở trang chi tiết series (hoặc bấm hộp ở banner trang chủ) → thêm vào Giỏ hàng → điền thông tin nhận hàng → chọn thanh toán → Xác nhận đặt hàng. Theo dõi ở orders.html.
+- Thanh toán: COD; thẻ ngân hàng (chỉ lưu 4 số cuối); quét mã QR chuyển khoản (nhân viên xác nhận sau đối soát).
+- Hủy đơn: chỉ khi đơn còn "Chờ xác nhận", ở trang orders.html bấm "Hủy đơn" (bấm 2 lần).
+- Bộ sưu tập (collection.html): bấm nhân vật để đánh dấu "Đã có".
+- Nhân viên đăng nhập bằng nút tròn góc phải trên → "Đăng nhập nhân viên".
+
+DỮ LIỆU SẢN PHẨM (mới nhất):
+${lines.join("\n\n")}
+
+ĐƠN HÀNG CỦA KHÁCH:
+${orders}`;
+  }
+
+  // Hiển thị câu trả lời AI an toàn: escape HTML rồi chỉ cho phép **đậm** và link nội bộ.
+  function renderAi(text) {
+    let html = escapeHtml(text);
+    html = html.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+    html = html.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, href) => {
+      const h = href.replace(/&amp;/g, "&");
+      return /^(index|detail|collection|orders|about|admin)\.html([?#][\w=&#-]*)?$/.test(h)
+        ? `<a class="chat-link" href="${escapeHtml(h)}">${label}</a>`
+        : label;
+    });
+    html = html.replace(/^\s*[-*]\s+/gm, "• ");
+    return html.replace(/\n/g, "<br/>");
+  }
+
+  async function askAi(text) {
+    history.push({ role: "user", content: text });
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 45000);
+    try {
+      const res = await fetch(AI.endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ system: buildSystemPrompt(), messages: history.slice(-12) }),
+        signal: ctrl.signal,
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok || !body.reply) throw new Error(body.error || `HTTP ${res.status}`);
+      history.push({ role: "assistant", content: body.reply });
+      return renderAi(body.reply);
+    } catch (err) {
+      history.pop(); // bỏ câu hỏi lỗi khỏi lịch sử
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   // ---------- Giao diện ----------
   const SUGGESTIONS = [
     "Có những series nào?",
@@ -413,8 +499,18 @@
       const typing = push("bot typing", "<span></span><span></span><span></span>");
       try {
         await loadData(); // luôn đọc dữ liệu mới nhất (giá/tồn kho có thể vừa đổi)
-        const reply = answer(t);
-        await new Promise((r) => setTimeout(r, 350));
+        let reply;
+        if (aiEnabled()) {
+          try {
+            reply = await askAi(t);
+          } catch (err) {
+            console.warn("[Trợ lý HACIPUPU] AI lỗi, dùng bộ trả lời có sẵn:", err);
+            reply = answer(t);
+          }
+        } else {
+          reply = answer(t);
+          await new Promise((r) => setTimeout(r, 350));
+        }
         typing.remove();
         push("bot", reply);
       } catch (err) {
@@ -446,5 +542,10 @@
       await loadData();
       return answer(text);
     },
+    async systemPrompt() {
+      await loadData();
+      return buildSystemPrompt();
+    },
+    renderAi,
   };
 })();
