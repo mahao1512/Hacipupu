@@ -48,22 +48,27 @@
                   </span>
                 </div>
 
-                <button
-                  type="button"
-                  data-pick-series="${series.id}"
-                  class="relative w-full rounded-2xl bg-gradient-to-br ${accent.bg} border ${accent.border} p-2 h-60 flex items-center justify-center overflow-hidden cursor-pointer"
-                  aria-label="Chọn 1 trong 5 hộp ${escapeHtml(series.name)}"
-                >
-                  <img
-                    src="${encodeAssetUrl(series.lineup_image || series.box_image)}"
-                    alt="Toàn bộ nhân vật ${escapeHtml(series.name)}"
-                    class="box-art w-full h-full object-contain rounded-xl"
-                    onerror="window.HacipupuApp.handleImgError(this)"
-                  />
-                  <span class="box-reveal-badge absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-2 rounded-full bg-gray-900/90 text-[#FFD93D] text-xs font-extrabold shadow-lg">
-                    🎲 Chọn 1 trong 5 hộp & mở thử!
-                  </span>
-                </button>
+                <div class="card-media relative">
+                  <a
+                    href="detail.html?id=${series.id}"
+                    class="relative w-full rounded-2xl bg-gradient-to-br ${accent.bg} border ${accent.border} p-2 h-60 flex items-center justify-center overflow-hidden"
+                    aria-label="Xem và mua ${escapeHtml(series.name)}"
+                  >
+                    <img
+                      src="${encodeAssetUrl(series.lineup_image || series.box_image)}"
+                      alt="Toàn bộ nhân vật ${escapeHtml(series.name)}"
+                      class="box-art w-full h-full object-contain rounded-xl"
+                      onerror="window.HacipupuApp.handleImgError(this)"
+                    />
+                    <span class="box-reveal-badge absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-2 rounded-full bg-gray-900/90 text-[#FFD93D] text-xs font-extrabold shadow-lg">
+                      🛍️ Xem & mua series này
+                    </span>
+                  </a>
+                  <button type="button" data-unbox-series="${series.id}" class="card-unbox-btn"
+                    aria-label="Khui thử 1 blind box ${escapeHtml(series.name)}" title="Chọn 1 trong 5 hộp và khui thử">
+                    <span aria-hidden="true">🎲</span> Khui thử
+                  </button>
+                </div>
 
                 <h3 class="font-display font-bold text-lg sm:text-xl text-gray-900 mt-4 leading-snug line-clamp-2">
                   <a href="detail.html?id=${series.id}" class="hover:text-[#FF6B6B] transition">${escapeHtml(series.name)}</a>
@@ -91,10 +96,11 @@
         })
         .join("");
 
-      grid.querySelectorAll("[data-pick-series]").forEach((btn) => {
+      // Bấm ảnh → trang mua series (thẻ <a>); chỉ nút "Khui thử" mới mở blind box.
+      grid.querySelectorAll("[data-unbox-series]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const s = seriesList.find((x) => x.id === Number(btn.dataset.pickSeries));
-          window.HacipupuBlindBox.open(s || Number(btn.dataset.pickSeries));
+          const s = seriesList.find((x) => x.id === Number(btn.dataset.unboxSeries));
+          window.HacipupuBlindBox.open(s || Number(btn.dataset.unboxSeries));
         });
       });
     } catch (err) {

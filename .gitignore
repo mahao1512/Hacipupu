@@ -1,0 +1,5 @@
+# Bí mật của Worker — KHÔNG đẩy lên GitHub
+worker/.dev.vars
+.wrangler/
+node_modules/
+dist/

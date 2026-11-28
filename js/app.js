@@ -207,7 +207,7 @@
             <a href="${staff ? "admin.html#kho" : "index.html"}" class="flex items-center gap-2 sm:gap-3 group min-w-0">
               <div class="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-2xl bg-gradient-to-br from-[#FFD93D] via-[#FF9F68] to-[#FF6B6B] p-0.5 shadow-md group-hover:rotate-[-4deg] transition-transform">
                 <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center overflow-hidden">
-                  <img src="logo.png" alt="HACIPUPU Logo" class="w-full h-full object-contain p-1"
+                  <img src="assets/logo.png" alt="HACIPUPU Logo" class="w-full h-full object-contain p-1"
                     onerror="window.HacipupuApp.handleLogoError(this)" />
                   <span class="hidden font-display font-bold text-lg text-[#FF6B6B]">HP</span>
                 </div>
@@ -270,6 +270,7 @@
                          </div>
                          <a href="orders.html" class="account-menu-item">🧾 Đơn hàng của tôi</a>
                          <a href="collection.html" class="account-menu-item">⭐ Bộ sưu tập của tôi</a>
+                         <button type="button" id="replay-tour-btn" class="account-menu-item w-full text-left border-t border-gray-100">🧭 Xem lại hướng dẫn nhanh</button>
                          <button type="button" id="open-login-btn" class="account-menu-item w-full text-left border-t border-gray-100 text-emerald-700">🔐 Đăng nhập nhân viên</button>`
                   }
                 </div>
@@ -300,6 +301,10 @@
       e.stopPropagation();
       const open = accountMenu.classList.toggle("hidden") === false;
       accountBtn.setAttribute("aria-expanded", String(open));
+    });
+    document.getElementById("replay-tour-btn")?.addEventListener("click", () => {
+      accountMenu.classList.add("hidden");
+      window.HacipupuTour && window.HacipupuTour.replay();
     });
     document.getElementById("open-login-btn")?.addEventListener("click", () => {
       accountMenu.classList.add("hidden");
@@ -399,6 +404,7 @@
                 <li><a href="about.html" class="hover:text-[#FF6B6B] transition">About Us</a></li>
                 <li><a href="orders.html" class="hover:text-[#FF6B6B] transition">Đơn Hàng Của Tôi</a></li>
                 <li><a href="collection.html" class="hover:text-[#FF6B6B] transition">Bộ Sưu Tập Của Tôi</a></li>
+                
               </ul>
             </div>
             <div class="rounded-2xl bg-gradient-to-br from-amber-50 via-rose-50 to-sky-50 p-3.5 border border-amber-200/70 shadow-sm">
